@@ -1,15 +1,25 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>event</ion-title>
+    <ion-title>{{event?.title}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-card>
     <ion-card-header>
-      <ion-card-title>
-        Evento
-      </ion-card-title>
+      <ion-card-title> {{event?.title}} </ion-card-title>
     </ion-card-header>
+    <ion-list>
+      <ion-item *ngFor="let item of event?.people, index as index">
+        <ion-label>{{item.name}}</ion-label>
+        <ion-label
+          >Gift to: {{item.view_to ? item.gift_to : "*********"}}</ion-label
+        >
+        <ion-icon
+          name='{{item.view_to ? "eye-outline" : "eye-off-outline"}}'
+          (click)="item.view_to ? item.view_to = !item.view_to : showModal(index)"
+        ></ion-icon>
+      </ion-item>
+    </ion-list>
   </ion-card>
 </ion-content>

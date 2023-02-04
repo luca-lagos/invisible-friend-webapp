@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { event } from '../core/interfaces/event';
 import { person } from '../core/interfaces/person';
+import { EventService } from '../core/services/event.service';
 
 @Component({
   selector: 'app-home',
@@ -8,86 +9,12 @@ import { person } from '../core/interfaces/person';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  constructor() {}
-
-  events: event[] = [
-    {
-      id: 1,
-      title: 'Event One',
-      people: [
-        {
-          name: 'John',
-          gift_to: false,
-        },
-        {
-          name: 'Nadia',
-          gift_to: true,
-        },
-        {
-          name: 'Luke',
-          gift_to: false,
-        },
-      ],
-      date: new Date(),
-      finished: false,
-    },
-    {
-      id: 2,
-      title: 'Event Two',
-      people: [
-        {
-          name: 'Nadia',
-          gift_to: true,
-        },
-      ],
-      date: new Date(),
-      finished: true,
-    },
-    {
-      id: 3,
-      title: 'Event Three',
-      people: [
-        {
-          name: 'John',
-          gift_to: false,
-        },
-      ],
-      date: new Date(),
-      finished: true,
-    },
-    {
-      id: 4,
-      title: 'Event Four',
-      people: [
-        {
-          name: 'John',
-          gift_to: false,
-        },
-        {
-          name: 'Nadia',
-          gift_to: true,
-        },
-      ],
-      date: new Date(),
-      finished: true,
-    },
-    {
-      id: 5,
-      title: 'Event Five',
-      people: [
-        {
-          name: 'John',
-          gift_to: false,
-        },
-        {
-          name: 'Luke',
-          gift_to: false,
-        },
-      ],
-      date: new Date(),
-      finished: true,
-    },
-  ];
+  event: event[];
+  constructor(
+    private EventService: EventService
+  ) {
+    this.event = EventService.getEvents();
+  }
 }
 
 //SEGUIR EN MIN 27:00

@@ -1,5 +1,5 @@
 export interface person{
     name: string;
-    gift_to?: boolean;
+    gift_to?: string;
     view_to?: boolean;
 }
