@@ -1,0 +1,7 @@
+{
+  "name": "Invisible-friend-webapp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
