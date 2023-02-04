@@ -11,14 +11,14 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-card *ngFor="let event of events">
+  <ion-card *ngFor="let event of events" [routerLink]="['/event']">
     <ion-card-header>
       <ion-card-title>{{event.title}}</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
       <p>Cantidad de participantes: {{event.people.length}}</p>
-      <p>Fecha del evento: ##.</p>
+      <p>Fecha del evento: {{event.date}}</p>
     </ion-card-content>
   </ion-card>
 </ion-content>
