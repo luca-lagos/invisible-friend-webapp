@@ -9,39 +9,59 @@ export class EventService {
   constructor(private StorageService: StorageService) {}
 
   async getEvents(
-    filter: 'earrings' | 'finished' | 'all' = 'earrings'
+    filter: 'all' | 'finished' | 'earrings' = 'all'
   ): Promise<event[]> {
     const events = await this.StorageService.get('event');
     switch (filter) {
       case 'all':
         return events;
-      case 'finished':
-        return events.filter((event: event) => event.finished != true);
       case 'earrings':
-        return events.filter((event: event) => event.finished == true);
+        return events.filter((event: event) => event.finished !== true);
+      case 'finished':
+        return events.filter((event: event) => event.finished === true);
     }
   }
 
   async getEventById(id: number): Promise<event | undefined> {
-    const events: event[] = await this.getEvents();
+    const events: event[] = await this.getEvents('all');
     const event_selected = events.find((event) => event.id == id);
-    console.log(event_selected);
     return event_selected;
   }
 
   async setNewEvent(event: event): Promise<number> {
     const new_event = event;
-    let events: event[] = await this.getEvents();
-    if (!events || events.length == 0) {
+    let events: event[] = await this.getEvents('all');
+    if (!events || events.length === 0) {
       events = [];
       new_event.id = 1;
     } else {
       new_event.id = events[events.length - 1].id! + 1;
     }
-    console.log(new_event);
     events.push(new_event);
     this.StorageService.set('event', events);
     return new_event.id;
+  }
+
+  async editEvent(e: event) {
+    const events: event[] = await this.StorageService.get('event');
+    const new_events: event[] = events.filter(
+      (event: event) => event.id != e.id
+    );
+    events.forEach((event) => {
+      event.people.forEach((person) => (person.view_to = false));
+    });
+    new_events.push(e);
+    new_events.sort((a, b) => a.id! - b.id!);
+    this.StorageService.set('event', new_events);
+    return;
+  }
+
+  async deleteEvent(id: number) {
+    const events: event[] = await this.StorageService.get("event");
+    const new_events: event[] = events.filter(
+      (event: event) => event.id !== id
+    );
+    this.StorageService.set('event', new_events);
   }
 
   raffleEvent(event: event): event {
@@ -66,26 +86,4 @@ export class EventService {
     return new_event;
   }
 
-  async editEvent(e: event) {
-    const events = await this.getEvents();
-    const new_events: event[] = events.filter(
-      (event: event) => event.id !== e.id
-    );
-    new_events.forEach((event) => {
-      event.people.forEach((person) => (person.view_to = false));
-      e.people.forEach((person) => (person.view_to = false));
-      new_events.push(e);
-      new_events.sort((a, b) => a.id! - b.id!);
-      this.StorageService.set('event', new_events);
-    });
-  }
-
-  async deleteEvent(id: number) {
-    const events = await this.getEvents();
-    const new_events: event[] = events.filter(
-      (event: event) => event.id !== id
-    );
-    console.log(new_events);
-    this.StorageService.set('event', new_events);
-  }
 }

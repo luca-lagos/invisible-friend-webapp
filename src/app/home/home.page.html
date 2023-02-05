@@ -11,17 +11,22 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-segment value="earrings" (ionChange)="getEvents()" [(ngModel)]="filter">
-    <ion-segment-button value="earrings">
-      <ion-label>Earrings</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="finished">
-      <ion-label>Finished</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="all">
+  <ion-segment value="all" [(ngModel)]="filter">
+    <ion-segment-button value="all" (click)="getEvents('all')">
       <ion-label>All</ion-label>
     </ion-segment-button>
+    <ion-segment-button value="earrings" (click)="getEvents('earrings')">
+      <ion-label>Earrings</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="finished" (click)="getEvents('finished')">
+      <ion-label>Finished</ion-label>
+    </ion-segment-button>
   </ion-segment>
+
+  <div class="empty-events" *ngIf="event?.length === 0">
+    <ion-icon name="alert-circle-outline"></ion-icon>
+    <p>Empty</p>
+  </div>
 
   <ion-card
     *ngFor="let e of event"
@@ -33,8 +38,8 @@
     </ion-card-header>
 
     <ion-card-content>
-      <p>Cantidad de participantes: {{e.people.length}}</p>
-      <p>Fecha del evento: {{e.date}}</p>
+      <p>Amount of people: {{e.people.length}}</p>
+      <p>Event date: {{getTimeBeforeEvent(e.date)}}</p>
     </ion-card-content>
   </ion-card>
 

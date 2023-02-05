@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { ViewWillEnter } from '@ionic/angular';
 import { event } from '../core/interfaces/event';
 import { EventService } from '../core/services/event.service';
+import { howLongFromPastDate } from '../core/helpers/time';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,7 @@ import { EventService } from '../core/services/event.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements ViewWillEnter {
-  filter: 'earrings' | 'finished' | 'all' = 'earrings';
+  filter: 'all' | 'finished' | 'earrings' = 'all';
   event?: event[];
   constructor(
     private EventService: EventService,
@@ -21,11 +22,12 @@ export class HomePage implements ViewWillEnter {
     this.getEvents(this.filter);
   }
 
-  async getEvents(filter: 'earrings' | 'finished' | 'all' = 'earrings'){
+  async getEvents(filter: 'all' | 'finished' | 'earrings' = 'all'){
     const events: event[] = await this.EventService.getEvents(filter);
     this.event = events;
-    console.log(this.event);
+  }
+
+  getTimeBeforeEvent(date: Date){
+    return howLongFromPastDate(date);
   }
 }
-
-//SEGUIR EN MIN 27:00

@@ -1,3 +1,4 @@
+import { ToastService } from './../../core/services/toast.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EventService } from 'src/app/core/services/event.service';
@@ -17,12 +18,13 @@ export class EventPage implements OnInit {
     private ActivatedRoute: ActivatedRoute,
     private EventService: EventService,
     private navCtrl: NavController,
-    private actionSheetCtrl: ActionSheetController
+    private actionSheetCtrl: ActionSheetController,
+    private ToastService: ToastService
   ) {
     ActivatedRoute.params.subscribe((params) => {
-      this.EventService.getEventById(params['id']).then((event) => {
-        this.event = event;
-      });
+      this.EventService.getEventById(params['id']).then(
+        (event) => (this.event = event)
+      );
     });
   }
 
@@ -54,6 +56,7 @@ export class EventPage implements OnInit {
 
     const result = await actionSheet.onDidDismiss();
     this.result = JSON.stringify(result, null, 2);
+    if (result.role === 'cancel') return;
     if (result.role === 'show') {
       this.event!.people[index].view_to = !this.event?.people[index].view_to;
     }
@@ -88,8 +91,8 @@ export class EventPage implements OnInit {
     if (result.role === 'no') return;
     if (result.role === 'yes') {
       this.EventService.deleteEvent(this.event!.id!);
+      this.ToastService.presentToast('Event deleted successfully');
     }
-    console.log(this.event);
     this.goBack();
   }
 
@@ -123,12 +126,13 @@ export class EventPage implements OnInit {
     if (result.role === 'yes') {
       const new_event = this.EventService.raffleEvent(this.event!);
       this.EventService.editEvent(new_event);
+      this.ToastService.presentToast('Event repeated successfully');
     }
   }
 
   async finishModal() {
     const actionSheet = await this.actionSheetCtrl.create({
-      header: 'Cambiando estado al evento',
+      header: 'Finishing event',
       subHeader: this.event!.finished
         ? 'You want to restore this event?'
         : '¿You want to finish and block this event?',
@@ -158,11 +162,15 @@ export class EventPage implements OnInit {
     if (result.role === 'change') {
       this.event!.finished = !this.event!.finished;
       this.EventService.editEvent(this.event!);
+      this.ToastService.presentToast(
+        this.event!.finished
+          ? 'Event finished successfully'
+          : 'Event restored successfully'
+      );
     }
-    if(this.event!.finished) this.goBack();
   }
 
   goBack() {
-    this.navCtrl.navigateBack('');
+    this.navCtrl.navigateRoot('');
   }
 }

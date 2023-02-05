@@ -1,5 +1,7 @@
 import { EventService } from 'src/app/core/services/event.service';
 import { NavController } from '@ionic/angular';
+import { ToastService } from 'src/app/core/services/toast.service';
+import { AlertService } from 'src/app/core/services/alert.service';
 import { Component, OnInit } from '@angular/core';
 import { event } from 'src/app/core/interfaces/event';
 import { empty_person } from 'src/app/core/interfaces/person';
@@ -20,7 +22,9 @@ export class AddEventPage implements OnInit {
 
   constructor(
     private navCtrl: NavController,
-    private EventService: EventService
+    private EventService: EventService,
+    private ToastService: ToastService,
+    private AlertService: AlertService
   ) {}
 
   ngOnInit() {}
@@ -30,8 +34,17 @@ export class AddEventPage implements OnInit {
   }
 
   async addEvent() {
+    const real_people = this.actual_event.people.filter(
+      (person) => person.name !== ''
+    );
+    if (real_people.length < 3)
+      return this.AlertService.presentAlert(
+        'Warning',
+        'An event must have a minimum of 3 people'
+      );
     const raffledEvent = this.EventService.raffleEvent(this.actual_event);
     await this.EventService.setNewEvent(raffledEvent);
+    this.ToastService.presentToast('Event created successfully');
     this.goBack();
   }
 
@@ -44,6 +57,6 @@ export class AddEventPage implements OnInit {
   }
 
   goBack() {
-    this.navCtrl.navigateBack('');
+    this.navCtrl.navigateRoot('');
   }
 }
