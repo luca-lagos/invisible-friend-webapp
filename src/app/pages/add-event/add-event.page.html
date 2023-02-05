@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <div class="nav-flex">
+      <ion-title>Add a event</ion-title>
+      <ion-icon name="arrow-back-circle-outline" (click)="goBack()"></ion-icon>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title
+        >{{actual_event.title === "" ? "No title" :
+        actual_event.title}}</ion-card-title
+      >
+    </ion-card-header>
+    <ion-card-content>
+      <form action="">
+        <ion-list>
+          <ion-item>
+            <ion-label position="floating">Event name</ion-label>
+            <ion-input
+              placeholder="Enter text"
+              [clearInput]="true"
+              [(ngModel)]="actual_event.title"
+              name="event-name"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>Event date</ion-label>
+            <ion-datetime-button datetime="datetime"></ion-datetime-button>
+            <ion-modal [keepContentsMounted]="true">
+              <ng-template>
+                <ion-datetime id="datetime" [min]="today"></ion-datetime>
+              </ng-template>
+            </ion-modal>
+          </ion-item>
+          <ion-item *ngFor="let people of actual_event.people, index as index">
+            <ion-label position="floating">Participant {{index + 1}}</ion-label>
+            <ion-input
+              placeholder="Enter text"
+              [clearInput]="true"
+            ></ion-input>
+          </ion-item>
+        </ion-list>
+        <div class="buttons-form">
+          <ion-button fill="solid" class="button-add"> Add </ion-button>
+          <ion-button fill="outline"> Cancel </ion-button>
+        </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

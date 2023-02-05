@@ -24,3 +24,25 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.nav-flex{
+    display: flex;
+    padding-right: 15px;
+}
+
+.nav-flex ion-icon{
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.buttons-form{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.buttons-form ion-button{
+    width: 50%;
+}

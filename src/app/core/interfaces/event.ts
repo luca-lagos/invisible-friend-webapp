@@ -1,7 +1,7 @@
 import { person } from "./person";
 
 export interface event {
-  id: number;
+  id?: number;
   title: string;
   people: person[];
   date: Date;

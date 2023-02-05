@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EventService } from 'src/app/core/services/event.service';
 import { event } from 'src/app/core/interfaces/event';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-event',
@@ -16,6 +16,7 @@ export class EventPage implements OnInit {
   constructor(
     private ActivatedRoute: ActivatedRoute,
     private EventService: EventService,
+    private navCtrl: NavController,
     private actionSheetCtrl: ActionSheetController
   ) {
     ActivatedRoute.params.subscribe((params) => {
@@ -57,5 +58,9 @@ export class EventPage implements OnInit {
     if (result.role === 'hide') {
       this.event!.people[index].view_to = !this.event?.people[index].view_to;
     }
+  }
+
+  goBack() {
+    this.navCtrl.navigateBack('');
   }
 }

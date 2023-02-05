@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{event?.title}}</ion-title>
+    <div class="nav-flex">
+      <ion-title>{{event?.title}}</ion-title>
+      <ion-icon name="arrow-back-circle-outline" (click)="goBack()"></ion-icon>
+    </div>
   </ion-toolbar>
 </ion-header>
 
