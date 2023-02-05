@@ -1,0 +1,34 @@
+.new-person{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.new-person ion-button{
+    width: 25%;
+    height: 40px;
+    font-size: 18px;
+}
+
+#trash{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.empty-people{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.empty-people p{
+    font-size: 15px;
+}
+
+.empty-people ion-icon{
+    font-size: 50px;
+}

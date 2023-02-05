@@ -13,6 +13,17 @@
       <ion-card-title> {{event?.title}} </ion-card-title>
     </ion-card-header>
     <ion-list>
+      <div class="raffle-panel">
+        <ion-button shape="round" [fill]="'outline'" (click)="deleteModal()">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+        <ion-button shape="round" [fill]="'outline'" (click)="repeatModal()">
+          <ion-icon name="repeat-outline"></ion-icon>
+        </ion-button>
+        <ion-button shape="round" [fill]="'outline'" (click)="finishModal()">
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </ion-button>
+      </div>
       <ion-item *ngFor="let item of event?.people, index as index">
         <ion-label>{{item.name}}</ion-label>
         <ion-label

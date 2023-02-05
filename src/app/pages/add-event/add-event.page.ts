@@ -30,8 +30,17 @@ export class AddEventPage implements OnInit {
   }
 
   async addEvent() {
-    await this.EventService.setNewEvent(this.actual_event);
+    const raffledEvent = this.EventService.raffleEvent(this.actual_event);
+    await this.EventService.setNewEvent(raffledEvent);
     this.goBack();
+  }
+
+  addPeopleInput() {
+    this.actual_event.people.push({ ...empty_person });
+  }
+
+  removePeopleInput(index: number) {
+    this.actual_event.people.splice(index, 1);
   }
 
   goBack() {

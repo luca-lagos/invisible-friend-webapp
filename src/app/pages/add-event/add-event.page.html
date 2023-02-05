@@ -41,19 +41,47 @@
               </ng-template>
             </ion-modal>
           </ion-item>
-          <ion-item *ngFor="let people of actual_event.people, index as index">
-            <ion-label position="floating">Participant {{index + 1}}</ion-label>
-            <ion-input
-              placeholder="Enter text"
-              [clearInput]="true"
-              [(ngModel)]="actual_event.people[index].name"
-              name="{{'event-people' + index}}"
-            ></ion-input>
-          </ion-item>
+          <div *ngIf="actual_event.people.length !== 0">
+            <ion-item
+              *ngFor="let people of actual_event.people, index as index"
+            >
+              <div>
+                <ion-label position="floating"
+                  >Participant {{index + 1}}</ion-label
+                >
+                <ion-input
+                  placeholder="Enter text"
+                  [(ngModel)]="actual_event.people[index].name"
+                  name="{{'event-people' + index}}"
+                ></ion-input>
+              </div>
+              <ion-icon
+                id="trash"
+                name="trash-bin-outline"
+                (click)="removePeopleInput(index)"
+              ></ion-icon>
+            </ion-item>
+          </div>
+          <div class="empty-people" *ngIf="actual_event.people.length === 0">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <p>Please, add a new person</p>
+          </div>
         </ion-list>
+        <div class="new-person">
+          <ion-button shape="round" (click)="addPeopleInput()">
+            <ion-icon name="add-outline"></ion-icon>
+          </ion-button>
+        </div>
         <div class="buttons-form">
           <ion-button fill="outline" (click)="goBack()"> Cancel </ion-button>
-          <ion-button fill="solid" class="button-add" type="submit" [disabled]="form.invalid"> Add </ion-button>
+          <ion-button
+            fill="solid"
+            class="button-add"
+            type="submit"
+            [disabled]="form.invalid"
+          >
+            Add
+          </ion-button>
         </div>
       </form>
     </ion-card-content>

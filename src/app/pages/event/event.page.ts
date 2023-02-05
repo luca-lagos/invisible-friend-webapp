@@ -23,7 +23,6 @@ export class EventPage implements OnInit {
       this.EventService.getEventById(params['id']).then((event) => {
         this.event = event;
       });
-      console.log(this.event);
     });
   }
 
@@ -35,10 +34,10 @@ export class EventPage implements OnInit {
       subHeader: 'Are you sure you see this info?',
       buttons: [
         {
-          text: 'Hide',
-          role: 'hide',
+          text: 'Show',
+          role: 'show',
           data: {
-            action: 'hide',
+            action: 'show',
           },
         },
         {
@@ -55,10 +54,79 @@ export class EventPage implements OnInit {
 
     const result = await actionSheet.onDidDismiss();
     this.result = JSON.stringify(result, null, 2);
-    if (result.role === 'hide') {
+    if (result.role === 'show') {
       this.event!.people[index].view_to = !this.event?.people[index].view_to;
     }
   }
+
+  async deleteModal() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Delete the raffle',
+      subHeader: 'Are you sure to delete this raffle?',
+      buttons: [
+        {
+          text: 'Yes',
+          role: 'yes',
+          data: {
+            action: 'yes',
+          },
+        },
+        {
+          text: 'No',
+          role: 'no',
+          data: {
+            action: 'no',
+          },
+        },
+      ],
+    });
+
+    await actionSheet.present();
+
+    const result = await actionSheet.onDidDismiss();
+    this.result = JSON.stringify(result, null, 2);
+    if (result.role === 'no') return;
+    if (result.role === 'yes') {
+      this.EventService.deleteEvent(this.event!.id!);
+    }
+    console.log(this.event);
+    this.goBack();
+  }
+
+  async repeatModal() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Repeat the raffle',
+      subHeader: 'Are you sure to repeat this raffle?',
+      buttons: [
+        {
+          text: 'Yes',
+          role: 'yes',
+          data: {
+            action: 'yes',
+          },
+        },
+        {
+          text: 'No',
+          role: 'no',
+          data: {
+            action: 'no',
+          },
+        },
+      ],
+    });
+
+    await actionSheet.present();
+
+    const result = await actionSheet.onDidDismiss();
+    this.result = JSON.stringify(result, null, 2);
+    if (result.role === 'no') return;
+    if (result.role === 'yes') {
+      const new_event = this.EventService.raffleEvent(this.event!);
+      this.EventService.editEvent(new_event);
+    }
+  }
+
+  finishModal() {}
 
   goBack() {
     this.navCtrl.navigateBack('');
