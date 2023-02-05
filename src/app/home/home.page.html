@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Invisible Friend </ion-title>
+    <ion-title> Invisible Friend</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,7 +11,23 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-card *ngFor="let e of event" [routerLink]="['/event', e.id]">
+  <ion-segment value="earrings" (ionChange)="getEvents()" [(ngModel)]="filter">
+    <ion-segment-button value="earrings">
+      <ion-label>Earrings</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="finished">
+      <ion-label>Finished</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="all">
+      <ion-label>All</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-card
+    *ngFor="let e of event"
+    [routerLink]="['/event', e.id]"
+    [ngClass]="{'finished-event' : e.finished, 'continuous-event': !e.finished}"
+  >
     <ion-card-header>
       <ion-card-title>{{e.title}}</ion-card-title>
     </ion-card-header>

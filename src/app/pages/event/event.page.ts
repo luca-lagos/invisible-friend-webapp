@@ -126,7 +126,41 @@ export class EventPage implements OnInit {
     }
   }
 
-  finishModal() {}
+  async finishModal() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Cambiando estado al evento',
+      subHeader: this.event!.finished
+        ? 'You want to restore this event?'
+        : '¿You want to finish and block this event?',
+      buttons: [
+        {
+          text: this.event!.finished ? 'Restore event' : 'Finish event',
+          role: 'change',
+          data: {
+            action: 'change',
+          },
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          data: {
+            action: 'cancel',
+          },
+        },
+      ],
+    });
+
+    await actionSheet.present();
+
+    const result = await actionSheet.onDidDismiss();
+    this.result = JSON.stringify(result, null, 2);
+    if (result.role === 'cancel') return;
+    if (result.role === 'change') {
+      this.event!.finished = !this.event!.finished;
+      this.EventService.editEvent(this.event!);
+    }
+    if(this.event!.finished) this.goBack();
+  }
 
   goBack() {
     this.navCtrl.navigateBack('');

@@ -1,3 +1,4 @@
+import { StorageService } from './../core/services/storage.service';
 import { Component } from '@angular/core';
 import { ViewWillEnter } from '@ionic/angular';
 import { event } from '../core/interfaces/event';
@@ -9,13 +10,21 @@ import { EventService } from '../core/services/event.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements ViewWillEnter {
+  filter: 'earrings' | 'finished' | 'all' = 'earrings';
   event?: event[];
-  constructor(private EventService: EventService) {}
+  constructor(
+    private EventService: EventService,
+    private StorageService: StorageService
+  ) {}
 
   ionViewWillEnter(): void {
-    this.EventService.getEvents().then((events) => {
-      this.event = events ? events : [];
-    });
+    this.getEvents(this.filter);
+  }
+
+  async getEvents(filter: 'earrings' | 'finished' | 'all' = 'earrings'){
+    const events: event[] = await this.EventService.getEvents(filter);
+    this.event = events;
+    console.log(this.event);
   }
 }
 
