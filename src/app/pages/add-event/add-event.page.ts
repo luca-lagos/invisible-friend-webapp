@@ -1,3 +1,4 @@
+import { EventService } from 'src/app/core/services/event.service';
 import { NavController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { event } from 'src/app/core/interfaces/event';
@@ -13,13 +14,25 @@ export class AddEventPage implements OnInit {
 
   actual_event: event = {
     title: '',
-    people: [empty_person, empty_person, empty_person],
+    people: [{ ...empty_person }, { ...empty_person }, { ...empty_person }],
     date: new Date(),
   };
 
-  constructor(private navCtrl: NavController) {}
+  constructor(
+    private navCtrl: NavController,
+    private EventService: EventService
+  ) {}
 
   ngOnInit() {}
+
+  changeDatetime(event: any) {
+    this.actual_event.date = new Date(event.detail.value);
+  }
+
+  async addEvent() {
+    await this.EventService.setNewEvent(this.actual_event);
+    this.goBack();
+  }
 
   goBack() {
     this.navCtrl.navigateBack('');

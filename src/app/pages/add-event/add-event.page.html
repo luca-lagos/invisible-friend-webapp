@@ -11,12 +11,12 @@
   <ion-card>
     <ion-card-header>
       <ion-card-title
-        >{{actual_event.title === "" ? "No title" :
+        >{{actual_event.title === "" ? "New event" :
         actual_event.title}}</ion-card-title
       >
     </ion-card-header>
     <ion-card-content>
-      <form action="">
+      <form (ngSubmit)="addEvent()" #form="ngForm">
         <ion-list>
           <ion-item>
             <ion-label position="floating">Event name</ion-label>
@@ -25,6 +25,7 @@
               [clearInput]="true"
               [(ngModel)]="actual_event.title"
               name="event-name"
+              [required]="true"
             ></ion-input>
           </ion-item>
           <ion-item>
@@ -32,7 +33,11 @@
             <ion-datetime-button datetime="datetime"></ion-datetime-button>
             <ion-modal [keepContentsMounted]="true">
               <ng-template>
-                <ion-datetime id="datetime" [min]="today"></ion-datetime>
+                <ion-datetime
+                  id="datetime"
+                  [min]="today"
+                  (ionChange)="changeDatetime($event)"
+                ></ion-datetime>
               </ng-template>
             </ion-modal>
           </ion-item>
@@ -41,12 +46,14 @@
             <ion-input
               placeholder="Enter text"
               [clearInput]="true"
+              [(ngModel)]="actual_event.people[index].name"
+              name="{{'event-people' + index}}"
             ></ion-input>
           </ion-item>
         </ion-list>
         <div class="buttons-form">
-          <ion-button fill="solid" class="button-add"> Add </ion-button>
-          <ion-button fill="outline"> Cancel </ion-button>
+          <ion-button fill="outline" (click)="goBack()"> Cancel </ion-button>
+          <ion-button fill="solid" class="button-add" type="submit" [disabled]="form.invalid"> Add </ion-button>
         </div>
       </form>
     </ion-card-content>

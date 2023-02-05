@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
+import { ViewWillEnter } from '@ionic/angular';
 import { event } from '../core/interfaces/event';
-import { person } from '../core/interfaces/person';
 import { EventService } from '../core/services/event.service';
 
 @Component({
@@ -8,12 +8,14 @@ import { EventService } from '../core/services/event.service';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
-  event: event[];
-  constructor(
-    private EventService: EventService
-  ) {
-    this.event = EventService.getEvents();
+export class HomePage implements ViewWillEnter {
+  event?: event[];
+  constructor(private EventService: EventService) {}
+
+  ionViewWillEnter(): void {
+    this.EventService.getEvents().then((events) => {
+      this.event = events ? events : [];
+    });
   }
 }
 
