@@ -1,15 +1,49 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Invisible Friend</ion-title>
+    <div class="nav-flex">
+      <ion-title> Invisible Friend</ion-title>
+      <ion-icon
+        name="information-circle-outline"
+        (click)="showInfoModal(true)"
+      ></ion-icon>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Invisible Friend</ion-title>
+      <div class="nav-flex">
+        <ion-title size="large">Invisible Friend</ion-title>
+        <ion-icon
+          name="information-circle-outline"
+          (click)="showInfoModal(true)"
+        ></ion-icon>
+      </div>
     </ion-toolbar>
   </ion-header>
+
+  <ion-modal [isOpen]="show">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>About to</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="showInfoModal(false)"
+              ><ion-icon name="close-circle-outline"></ion-icon
+            ></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <p>
+          This webapp is developed by Luca Lagos, please visit my
+          <a href="http://luca-lagos.vercel.app" target="_blank">portfolio</a>. Thanks you for
+          view and test this app <ion-icon name="happy-outline"></ion-icon>.
+        </p>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 
   <ion-segment value="all" [(ngModel)]="filter">
     <ion-segment-button value="all" (click)="getEvents('all')">

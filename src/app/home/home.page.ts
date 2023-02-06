@@ -13,6 +13,8 @@ import { howLongFromPastDate } from '../core/helpers/time';
 export class HomePage implements ViewWillEnter {
   filter: 'all' | 'finished' | 'earrings' = 'all';
   event?: event[];
+  show: boolean = false;
+
   constructor(
     private EventService: EventService,
     private StorageService: StorageService
@@ -22,12 +24,16 @@ export class HomePage implements ViewWillEnter {
     this.getEvents(this.filter);
   }
 
-  async getEvents(filter: 'all' | 'finished' | 'earrings' = 'all'){
+  async getEvents(filter: 'all' | 'finished' | 'earrings' = 'all') {
     const events: event[] = await this.EventService.getEvents(filter);
     this.event = events;
   }
 
-  getTimeBeforeEvent(date: Date){
+  getTimeBeforeEvent(date: Date) {
     return howLongFromPastDate(date);
+  }
+
+  showInfoModal(show: boolean) {
+    this.show = show;
   }
 }
